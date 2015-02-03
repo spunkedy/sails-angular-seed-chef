@@ -1,0 +1,16 @@
+[Unit]
+Description=Start Sails Node.js Service
+Requires=network.target
+After=network.target
+
+[Service]
+Type=forking
+WorkingDirectory=<%= node[:sailsTaskMere][:app_dir] %>
+ExecStart=/bin/bash -c "PATH=<%= node[:sailsTaskMere][:home] %>/.rbenv/shims:<%= node[:sailsTaskMere][:home] %>/.rbenv/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:<%= node[:sailsTaskMere][:home] %>/.local/bin:<%= node[:sailsTaskMere][:home] %>/bin /usr/bin/forever start --pidFile <%= node[:sailsTaskMere][:home] %>/run/<%= node[:sailsTaskMere][:user] %>.pid app.js"
+ExecStop=/usr/bin/forever stop app.js
+PIDFile=<%= node[:sailsTaskMere][:home] %>/run/<%= node[:sailsTaskMere][:user] %>.pid
+User=<%= node[:sailsTaskMere][:user] %>
+Group=<%= node[:sailsTaskMere][:user] %>
+
+[Install]
+WantedBy=multi-user.target
